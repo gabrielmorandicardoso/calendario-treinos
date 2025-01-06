@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.calendar {
+    width: 90%;
+    max-width: 800px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.header {
+    background: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 1.5em;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-top: 2px solid #ddd;
+}
+
+.day, .date {
+    padding: 10px;
+    text-align: center;
+}
+
+.day {
+    background: #f8f8f8;
+    font-weight: bold;
+}
+
+.date {
+    background: #fff;
+    cursor: pointer;
+}
+
+.date:hover {
+    background: #e0f7fa;
+}
+
+.training {
+    background-color: #ffcc80;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+    font-size: 0.8em;
+}
+
+.legend {
+    margin: 15px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+}
+
+.color-box {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+    border-radius: 3px;
+}
+
+.calistenia { background: #4CAF50; }
+.mobilidade { background: #2196F3; }
+.flexibilidade { background: #FFC107; }
