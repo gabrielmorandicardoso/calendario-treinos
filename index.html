@@ -1,41 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário de Treinos</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link para o arquivo CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="calendar">
-        <div class="header">Janeiro 2025</div>
-        <div class="grid">
-            <!-- Days of the week -->
-            <div class="day">Dom</div>
-            <div class="day">Seg</div>
-            <div class="day">Ter</div>
-            <div class="day">Qua</div>
-            <div class="day">Qui</div>
-            <div class="day">Sex</div>
-            <div class="day">Sáb</div>
+    <div id="calendar">
+        <h1 id="month-name">Janeiro 2025</h1>
+        <div id="days-container"></div>
+    </div>
 
-            <!-- Dates with placeholder for trainings -->
-            <div class="date">1</div>
-            <div class="date">2</div>
-            <div class="date">3</div>
-            <div class="date">4<div class="training calistenia">Calistenia</div></div>
-            <div class="date">5</div>
-            <div class="date">6<div class="training mobilidade">Mobilidade</div></div>
-            <div class="date">7</div>
-            <!-- Add remaining dates as needed -->
-        </div>
-        <div class="legend">
-            <div class="legend-item"><div class="color-box calistenia"></div>Calistenia</div>
-            <div class="legend-item"><div class="color-box mobilidade"></div>Mobilidade</div>
-            <div class="legend-item"><div class="color-box flexibilidade"></div>Flexibilidade</div>
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Treino para o dia selecionado</h2>
+            <textarea id="training-text" placeholder="Escreva o treino aqui..."></textarea>
+            <div class="buttons">
+                <button id="save-btn">Salvar</button>
+                <button id="save-selected-btn">Salvar para os dias selecionados</button>
+                <button id="select-days-btn">Selecionar dias</button>
+                <button class="delete-btn">Excluir treino</button>
+            </div>
+            <!-- Lista de dias para selecionar -->
+            <div id="select-days-container" class="select-days-container" style="display: none;">
+                <h3>Escolha os dias</h3>
+                <div id="days-list"></div>
+            </div>
         </div>
     </div>
 
-    <script src="script.js"></script> <!-- Link para o arquivo JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
