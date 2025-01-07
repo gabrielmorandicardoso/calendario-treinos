@@ -38,8 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
             dayElement.textContent = day;
             dayElement.dataset.day = day;
 
-            const key = `day-${currentYear}-${currentMonth}-${day}`;
-            const savedContent = localStorage.getItem(key);
+            const savedContent = localStorage.getItem(`day-${currentYear}-${currentMonth}-${day}`);
             if (savedContent) {
                 const contentDiv = document.createElement('div');
                 contentDiv.classList.add('day-content');
@@ -81,8 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function openModal(dayElement) {
         modal.style.display = "flex";
-        const key = `day-${currentYear}-${currentMonth}-${selectedDay}`;
-        trainingText.value = localStorage.getItem(key) || '';
+        trainingText.value = localStorage.getItem(`day-${currentYear}-${currentMonth}-${selectedDay}`) || '';
         selectDaysContainer.style.display = "none";
         daysList.innerHTML = '';
         saveBtn.style.display = 'block';
@@ -95,15 +93,13 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     saveBtn.addEventListener('click', function() {
-        const key = `day-${currentYear}-${currentMonth}-${selectedDay}`;
-        localStorage.setItem(key, trainingText.value);
+        localStorage.setItem(`day-${currentYear}-${currentMonth}-${selectedDay}`, trainingText.value);
         modal.style.display = "none";
         renderCalendar();
     });
 
     deleteBtn.addEventListener('click', function() {
-        const key = `day-${currentYear}-${currentMonth}-${selectedDay}`;
-        localStorage.removeItem(key);
+        localStorage.removeItem(`day-${currentYear}-${currentMonth}-${selectedDay}`);
         modal.style.display = "none";
         renderCalendar();
     });
@@ -141,8 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     saveSelectedBtn.addEventListener('click', function() {
         selectedDays.forEach(day => {
-            const key = `day-${currentYear}-${currentMonth}-${day}`;
-            localStorage.setItem(key, trainingText.value);
+            localStorage.setItem(`day-${currentYear}-${currentMonth}-${day}`, trainingText.value);
         });
         modal.style.display = "none";
         renderCalendar();
@@ -172,5 +167,10 @@ document.addEventListener("DOMContentLoaded", function() {
         renderCalendar();
     });
 
-    renderCalendar();
+    // Renderiza o calendário imediatamente ao carregar
+    renderCalendar(function renderCalendar() {
+        console.log(`Rendering calendar for ${currentYear}-${currentMonth}`);
+        
+    }
+    );
 });
