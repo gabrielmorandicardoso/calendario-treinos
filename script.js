@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", function() {
             dayElement.textContent = day;
             dayElement.dataset.day = day;
 
-            const savedContent = localStorage.getItem(`day-${day}`);
+            const key = `day-${currentYear}-${currentMonth}-${day}`;
+            const savedContent = localStorage.getItem(key);
             if (savedContent) {
                 const contentDiv = document.createElement('div');
                 contentDiv.classList.add('day-content');
@@ -80,7 +81,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function openModal(dayElement) {
         modal.style.display = "flex";
-        trainingText.value = localStorage.getItem(`day-${selectedDay}`) || '';
+        const key = `day-${currentYear}-${currentMonth}-${selectedDay}`;
+        trainingText.value = localStorage.getItem(key) || '';
         selectDaysContainer.style.display = "none";
         daysList.innerHTML = '';
         saveBtn.style.display = 'block';
@@ -93,13 +95,15 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     saveBtn.addEventListener('click', function() {
-        localStorage.setItem(`day-${selectedDay}`, trainingText.value);
+        const key = `day-${currentYear}-${currentMonth}-${selectedDay}`;
+        localStorage.setItem(key, trainingText.value);
         modal.style.display = "none";
         renderCalendar();
     });
 
     deleteBtn.addEventListener('click', function() {
-        localStorage.removeItem(`day-${selectedDay}`);
+        const key = `day-${currentYear}-${currentMonth}-${selectedDay}`;
+        localStorage.removeItem(key);
         modal.style.display = "none";
         renderCalendar();
     });
@@ -137,7 +141,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     saveSelectedBtn.addEventListener('click', function() {
         selectedDays.forEach(day => {
-            localStorage.setItem(`day-${day}`, trainingText.value);
+            const key = `day-${currentYear}-${currentMonth}-${day}`;
+            localStorage.setItem(key, trainingText.value);
         });
         modal.style.display = "none";
         renderCalendar();
