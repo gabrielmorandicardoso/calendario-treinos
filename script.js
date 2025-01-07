@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const selectDaysBtn = document.getElementById("select-days-btn");
     const selectDaysContainer = document.getElementById("select-days-container");
     const daysList = document.getElementById("days-list");
+    const prevMonthBtn = document.getElementById("prev-month");
+    const nextMonthBtn = document.getElementById("next-month");
+    const todayBtn = document.getElementById("today-btn");
 
     let selectedDay = null;
     let selectedDays = [];
@@ -23,52 +26,51 @@ document.addEventListener("DOMContentLoaded", function() {
         daysContainer.innerHTML = '';
         monthName.textContent = new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long', year: 'numeric' });
 
-        // Add empty days before the first day of the month
         for (let i = 0; i < firstDayOfMonth; i++) {
             let emptyDay = document.createElement('div');
             emptyDay.classList.add('day');
             daysContainer.appendChild(emptyDay);
         }
 
-        // Add the days of the month
         for (let day = 1; day <= daysInMonth; day++) {
             let dayElement = document.createElement('div');
             dayElement.classList.add('day');
             dayElement.textContent = day;
             dayElement.dataset.day = day;
 
-            // Verificar se existe conteúdo salvo para o dia
             const savedContent = localStorage.getItem(`day-${day}`);
             if (savedContent) {
                 const contentDiv = document.createElement('div');
                 contentDiv.classList.add('day-content');
-                contentDiv.textContent = savedContent;
+                contentDiv.innerHTML = `<i class="fa fa-dumbbell"></i>${savedContent}`;
                 dayElement.appendChild(contentDiv);
             }
 
-            // Mark the current day (only if it's the current month and year)
             if (day === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
                 dayElement.classList.add('current-day');
             }
 
-            // Add event listener to open modal
+            // Marca os dias selecionados visualmente
+            if (selectedDays.includes(day)) {
+                dayElement.classList.add('selected');
+            }
+
             dayElement.addEventListener('click', function() {
                 selectedDay = dayElement.dataset.day;
                 openModal(dayElement);
             });
 
-            // Add hover listener for tooltip
             dayElement.addEventListener('mouseenter', function() {
                 const existingContent = dayElement.querySelector('.day-content');
                 if (existingContent) {
-                    existingContent.style.display = 'block';  // Show the content when hovering
+                    existingContent.style.display = 'block';
                 }
             });
 
             dayElement.addEventListener('mouseleave', function() {
                 const existingContent = dayElement.querySelector('.day-content');
                 if (existingContent) {
-                    existingContent.style.display = 'none';  // Hide the content when mouse leaves
+                    existingContent.style.display = 'none';
                 }
             });
 
@@ -78,116 +80,92 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function openModal(dayElement) {
         modal.style.display = "flex";
-
-        // Reset the modal content each time it's opened
-        resetModalContent();
-
-        const existingContent = dayElement.querySelector('.day-content');
-        if (existingContent) {
-            trainingText.value = existingContent.textContent;
-        }
+        trainingText.value = localStorage.getItem(`day-${selectedDay}`) || '';
+        selectDaysContainer.style.display = "none";
+        daysList.innerHTML = '';
+        saveBtn.style.display = 'block';
+        saveSelectedBtn.style.display = 'none';
+        deleteBtn.style.display = 'block';
     }
 
-    function closeModalHandler() {
+    closeModal.addEventListener("click", function() {
         modal.style.display = "none";
-    }
-
-    function resetModalContent() {
-        trainingText.value = ''; // Clear the content in the modal input
-        selectedDays = []; // Clear the selected days array
-        daysList.innerHTML = ''; // Clear the selectable days list
-        selectDaysContainer.style.display = "none"; // Hide the select days container
-    }
-
-    closeModal.addEventListener("click", closeModalHandler);
-
-    // Save single day
-    saveBtn.addEventListener("click", function() {
-        const selectedDayElement = document.querySelector(`.day[data-day="${selectedDay}"]`);
-        const newContent = trainingText.value;
-
-        // Salvar no LocalStorage
-        localStorage.setItem(`day-${selectedDay}`, newContent); // Salva o conteúdo do dia selecionado
-
-        const existingContent = selectedDayElement.querySelector('.day-content');
-
-        if (existingContent) {
-            existingContent.textContent = newContent;
-        } else {
-            const contentDiv = document.createElement('div');
-            contentDiv.classList.add('day-content');
-            contentDiv.textContent = newContent;
-            selectedDayElement.appendChild(contentDiv);
-        }
-
-        closeModalHandler();
     });
 
-    // Save for selected days
-    saveSelectedBtn.addEventListener("click", function() {
-        selectedDays.forEach(day => {
-            const dayElement = document.querySelector(`.day[data-day="${day}"]`);
-            const newContent = trainingText.value;
-
-            // Salvar no LocalStorage
-            localStorage.setItem(`day-${day}`, newContent);
-
-            let existingContent = dayElement.querySelector('.day-content');
-            if (existingContent) {
-                existingContent.textContent = newContent;
-            } else {
-                const contentDiv = document.createElement('div');
-                contentDiv.classList.add('day-content');
-                contentDiv.textContent = newContent;
-                dayElement.appendChild(contentDiv);
-            }
-        });
-
-        closeModalHandler();
+    saveBtn.addEventListener('click', function() {
+        localStorage.setItem(`day-${selectedDay}`, trainingText.value);
+        modal.style.display = "none";
+        renderCalendar();
     });
 
-    // Excluir treino
-    deleteBtn.addEventListener("click", function() {
-        const selectedDayElement = document.querySelector(`.day[data-day="${selectedDay}"]`);
-        const content = selectedDayElement.querySelector('.day-content');
-        if (content) {
-            content.remove();
-        }
-
-        // Remover conteúdo do LocalStorage
+    deleteBtn.addEventListener('click', function() {
         localStorage.removeItem(`day-${selectedDay}`);
-
-        closeModalHandler();
+        modal.style.display = "none";
+        renderCalendar();
     });
 
-    // Seleção de dias
-    selectDaysBtn.addEventListener("click", function() {
-        selectDaysContainer.style.display = "block";
-        renderSelectableDays();
-    });
+    selectDaysBtn.addEventListener('click', function() {
+        selectDaysContainer.style.display = 'block';
+        saveBtn.style.display = 'none';
+        saveSelectedBtn.style.display = 'block';
 
-    function renderSelectableDays() {
-        daysList.innerHTML = ''; // Limpa a lista de dias a cada vez que abrir
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayOption = document.createElement('div');
-            dayOption.textContent = day;
-            dayOption.dataset.day = day;
+        daysList.innerHTML = '';
+        for (let day = 1; day <= 31; day++) {
+            let dayDiv = document.createElement('div');
+            dayDiv.textContent = day;
+            dayDiv.dataset.day = day;
 
-            // Adiciona evento de clique para selecionar ou desmarcar o dia
-            dayOption.addEventListener('click', function() {
-                if (selectedDays.includes(day)) {
-                    selectedDays = selectedDays.filter(d => d !== day);
-                    dayOption.style.backgroundColor = ''; // Remove a seleção
-                } else {
+            // Marca os dias selecionados visualmente no modal
+            if (selectedDays.includes(day)) {
+                dayDiv.classList.add('selected');
+            }
+
+            dayDiv.addEventListener('click', function() {
+                dayDiv.classList.toggle('selected');
+                const day = parseInt(dayDiv.dataset.day);
+                const index = selectedDays.indexOf(day);
+                if (index === -1) {
                     selectedDays.push(day);
-                    dayOption.style.backgroundColor = '#007bff'; // Marca o dia como selecionado
+                } else {
+                    selectedDays.splice(index, 1);
                 }
             });
 
-            daysList.appendChild(dayOption);
+            daysList.appendChild(dayDiv);
         }
-    }
+    });
+
+    saveSelectedBtn.addEventListener('click', function() {
+        selectedDays.forEach(day => {
+            localStorage.setItem(`day-${day}`, trainingText.value);
+        });
+        modal.style.display = "none";
+        renderCalendar();
+    });
+
+    prevMonthBtn.addEventListener('click', function() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    });
+
+    nextMonthBtn.addEventListener('click', function() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar();
+    });
+
+    todayBtn.addEventListener('click', function() {
+        currentMonth = new Date().getMonth();
+        currentYear = new Date().getFullYear();
+        renderCalendar();
+    });
 
     renderCalendar();
 });

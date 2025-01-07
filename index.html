@@ -5,10 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendário de Treinos</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Inclusão do Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="calendar">
+        <!-- Navegação de mês -->
+        <div class="calendar-navigation">
+            <button id="prev-month" class="nav-button">&#8249;</button>
+            <span id="current-month">Janeiro 2025</span>
+            <button id="next-month" class="nav-button">&#8250;</button>
+        </div>
+
         <h1 id="month-name">Janeiro 2025</h1>
+        <button id="today-button" class="today-button">Hoje</button>
+
         <div id="days-container"></div>
     </div>
 
@@ -24,7 +35,6 @@
                 <button id="select-days-btn">Selecionar dias</button>
                 <button class="delete-btn">Excluir treino</button>
             </div>
-            <!-- Lista de dias para selecionar -->
             <div id="select-days-container" class="select-days-container" style="display: none;">
                 <h3>Escolha os dias</h3>
                 <div id="days-list"></div>

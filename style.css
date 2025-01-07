@@ -25,7 +25,43 @@ body {
   overflow-y: auto;
 }
 
-#calendar h1 {
+#calendar-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+#calendar-header button {
+  background-color: #ffbf00;
+  border: none;
+  color: #fff;
+  padding: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+#calendar-header button:hover {
+  background-color: #ff9800;
+}
+
+#today-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+#today-btn:hover {
+  background-color: #45a049;
+}
+
+#month-name {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   background-color: #c59e1e;
   padding: 10px;
@@ -62,21 +98,19 @@ body {
 }
 
 .day.selected {
-  background-color: #28a745;
+  background-color: #007bff; /* Azul para o dia selecionado */
   color: #fff;
 }
 
-/* Estilo para o dia atual */
 .day.current-day {
-  background-color: #ffeb3b;  /* Amarelo claro para destacar o dia atual */
+  background-color: #ffeb3b;
   color: #333;
   font-size: 60px;
   font-weight: bolder;
 }
 
-/* Tooltip com conteúdo de treino */
 .day .day-content {
-  display: none; /* Inicialmente oculto */
+  display: none;
   position: absolute;
   bottom: 10px;
   left: 5px;
@@ -93,34 +127,34 @@ body {
   transition: opacity 0.3s ease;
 }
 
-/* Mostrar o conteúdo ao passar o mouse */
 .day:hover .day-content {
   display: block;
-  opacity: 1; /* Torna o conteúdo visível */
+  opacity: 1;
 }
 
-/* Novo estilo para o tooltip (quadro) */
+.day .day-content i {
+  font-size: 1.5rem;
+  margin-right: 5px;
+}
+
 .day:hover .day-content {
-  display: block;
   position: absolute;
-  top: 20px; /* Ajuste a posição para mostrar acima do dia */
+  top: 20px;
   left: 100%;
   transform: translateX(-50%);
-  background-color: rgba(196, 18, 18, 0.9); /* Cor de fundo para destacar */
+  background-color: rgba(196, 18, 18, 0.9);
   color: #fff;
   border-radius: 8px;
   padding: 15px;
   font-variant-caps: all-petite-caps;
-  overflow: auto; /* Permite rolar se o conteúdo for maior */
   max-height: max-content;
-  width: 125px; /* Largura do quadro */
+  width: 125px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-  font-size: 1rem; /* Aumentar o texto */
+  font-size: 1rem;
   z-index: 10;
   transition: opacity 0.3s ease;
 }
 
-/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -144,10 +178,6 @@ body {
   position: relative;
 }
 
-.modal-content h2 {
-  margin-bottom: 20px;
-}
-
 textarea#training-text {
   width: 85%;
   height: 100px;
@@ -156,9 +186,6 @@ textarea#training-text {
   padding: 10px;
   font-size: 1rem;
   margin-bottom: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 15px;
-  font-variant-caps: all-petite-caps;
 }
 
 button {
@@ -212,14 +239,6 @@ button.delete-btn:hover {
   color: #000;
 }
 
-/* Estilo para os dias selecionáveis no modal */
-#days-list {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-  margin-top: 10px;
-}
-
 #days-list div {
   padding: 10px;
   background-color: #f4f4f9;
@@ -227,6 +246,11 @@ button.delete-btn:hover {
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+#days-list div.selected {
+  background-color: #007bff; /* Azul para o dia selecionado */
+  color: #fff;
 }
 
 #days-list div:hover {
