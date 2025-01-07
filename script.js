@@ -81,11 +81,16 @@ document.addEventListener("DOMContentLoaded", function() {
     function openModal(dayElement) {
         modal.style.display = "flex";
         trainingText.value = localStorage.getItem(`day-${currentYear}-${currentMonth}-${selectedDay}`) || '';
+        
+        // Limpar a seleção de dias ao abrir o modal
         selectDaysContainer.style.display = "none";
         daysList.innerHTML = '';
         saveBtn.style.display = 'block';
         saveSelectedBtn.style.display = 'none';
         deleteBtn.style.display = 'block';
+
+        // Limpa a seleção visual dos dias
+        selectedDays = [];
     }
 
     closeModal.addEventListener("click", function() {
@@ -136,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     saveSelectedBtn.addEventListener('click', function() {
+        // Salva os dias selecionados no localStorage
         selectedDays.forEach(day => {
             localStorage.setItem(`day-${currentYear}-${currentMonth}-${day}`, trainingText.value);
         });
@@ -168,9 +174,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Renderiza o calendário imediatamente ao carregar
-    renderCalendar(function renderCalendar() {
-        console.log(`Rendering calendar for ${currentYear}-${currentMonth}`);
-        
-    }
-    );
+    renderCalendar();
 });
